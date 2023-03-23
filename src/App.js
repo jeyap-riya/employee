@@ -11,8 +11,6 @@ import * as React from 'react';
 function App() {
   const [isEditing, setIsEditing] = useState(false)
   const[editing,setEditing] = useState(null)
-  const [isAdding,setIsAdding] =useState(false)
-  const[adding,setAdding]= useState(null)
   const [dataSource, setDataSource] = useState([
     {
       id:1,
