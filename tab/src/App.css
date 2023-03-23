@@ -36,4 +36,11 @@
     transform: rotate(360deg);
   }
 }
+select{
+  font-size: calc(10px + 2vmin);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  border-width: 100px;
+}
 
