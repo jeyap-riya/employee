@@ -162,7 +162,8 @@ function App() {
     
   };
   
-  const onAddEmployee = (record) => {
+  const onAdd = (record) => {
+    
    const newEmployee ={
       id:'',
       firstName:'',
@@ -185,10 +186,10 @@ function App() {
     <div className="App">
       <header className="App-header">
       <center><h1>Employee Details</h1> </center><br/><br/>
-      <center><Button  onClick={onAddEmployee} style={{backgroundColor:"skyblue", color:"Black"}}>Add new employee
-      <Table columns={columns} dataSource={dataSource} />
+       <div> <center><Button  onClick={onAdd} style={{backgroundColor:"skyblue", color:"Black"}}>Add new employee</Button><br/><br/></div>
+       <div> <Table columns={columns} dataSource={dataSource} /></div>
     
-        <Modal
+        <div>  <Modal
            title="Edit Employee"
            visible={isEdit} 
            okText="Save"
@@ -233,9 +234,9 @@ function App() {
                 {min: 3},
                 ]}hasFeedback>  
          
-             <Input value={editing?.firstName} onChange={(e) => { setEditing((pre)=>{
+             <Input value={edit?.firstName} onChange={(e) => { setEdit((pre)=>{
                         return{...pre, firstName: e.target.value};
-                   });}} placeholder="firstName"  /></Form.Item>
+                   });}} placeholder="firstName"  ></Input></Form.Item>
 
              <Form.Item name="lastName"label= "Last Name"  rules={[
               {
@@ -245,59 +246,50 @@ function App() {
                 {whitespace:true},
                 {min: 3},
                 ]}hasFeedback> 
-                 <Input label="lastname:" value={editing?.lastName} onChange={(e) => {setEditing((pre)=>{
-                          return{...pre, lastName: e.target.value}; });}} placeholder="lastName"/></Form.Item>
+                 <Input label="lastname:" value={edit?.lastName} onChange={(e) => {setEdit((pre)=>{
+                          return{...pre, lastName: e.target.value}; });}} placeholder="lastName"></Input></Form.Item>
+           <Form.Item name="email"label= "Email"  rules={[
+              {
+                required: true,
+                message: "please Enter your Email",
+                },
+                {type: "email"},
+                ]}>
   
-  <Input label="email:"
-  value={editing?.email}
-   onChange={(e) => {
-  setEditing((pre)=>{
-    return{...pre, email: e.target.value};
-  });
-}} placeholder="email"
-  />
-  <label >Gender</label>
-  <select  placeholder="gender"  style={{ color:"gray", width: '100%',height:"33px" }} value={editing?.gender}
-   onChange={(e) => {
-  setEditing((pre)=>{
-    return{...pre, gender: e.target.value};
-  });
-}} >
+            <Input label="email:" value={edit?.email}onChange={(e) => {setEdit((pre)=>{
+                     return{...pre, email: e.target.value}; });}} placeholder="email"/></Form.Item>
+          <Form.Item name="gender"label= "Gender" requiredMark="optional"> 
+              <select  placeholder="gender"  style={{ color:"gray", width: '100%',height:"33px" }} value={edit?.gender} onChange={(e) => { setEdit((pre)=>{
+                   return{...pre, gender: e.target.value}; });}} >
 
-       <option value="Male">male</option>
+                        <option value="Male">male</option>
 
-       <option value="female">female</option>
+                         <option value="female">female</option>
 
-       <option value="other">other</option>
-
-     
-
-  </select>
-  <label >Date Of Birth</label>
-  <Input type="date" label="dateOfBirth:"
-  value={editing?.dateOfBirth}
-   onChange={(e) => {
-  setEditing((pre)=>{
-    return{...pre, dateOfBirth: e.target.value};
-  });
-}} placeholder="dateOfBirth"
-  />
-  <label >Date Of Joining</label>
-  <Input type="date" label="dateOfJoining:"
-  value={editing?.dateOfJoining}
-   onChange={(e) => {
-  setEditing((pre)=>{
-    return{...pre, dateOfJoining: e.target.value};
-  });
-}} placeholder="dateOfJoining"
-  />
-  </Space>
-         
-          
-        
-             
-        </Modal>
-        
+                         <option value="other">other</option>
+              </select></Form.Item>
+         <Form.Item name="dateOfBirth"label= "date Of Birth"  rules={[
+              {
+                required: true,
+                message: "please provide your date of birth",
+                },
+               
+                ]}hasFeedback>
+               <Input type="date" label="dateOfBirth" value={edit?.dateOfBirth} onChange={(e) => { setEdit((pre)=>{
+                  return{...pre, dateOfBirth: e.target.value}; });}} placeholder="dateOfBirth" ></Input></Form.Item>
+          <Form.Item name="date of joing"label= "date Of Joining"  rules={[
+              {
+                required: true,
+                message: "please provide your joining date",
+                },
+                
+                ]}hasFeedback>
+            <Input type="date" label="dateOfJoining:"value={edit?.dateOfJoining} onChange={(e) => { setEdit((pre)=>{
+                 return{...pre, dateOfJoining: e.target.value}; });}} placeholder="dateOfJoining" ></Input></Form.Item>
+                  </Space>
+              </Form> 
+           </Modal>
+        </div>
       </header>
     </div>
   );
