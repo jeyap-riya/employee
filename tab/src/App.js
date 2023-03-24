@@ -219,7 +219,7 @@ function App() {
       <header className="App-header">
       <center><h1>Employee Details</h1> </center><br/><br/>
       <div><center><Button   onClick={onAdd} style={{backgroundColor:"skyblue", color:"Black"}}>Add new employee</Button><br/><br/></center></div>
-       <div><Table columns={columns} dataSource={dataSource} /></div>
+       <div><Table columns={columns} dataSource={dataSource}  rowClassName={() => 'editable-row'}/></div>
        <div><Modal
        title="Edit Employee"
        visible={isEdit}
