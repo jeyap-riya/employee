@@ -9,8 +9,8 @@ import * as React from 'react';
 
 
 function App() {
-  const [isEditing, setIsEditing] = useState(false)
-  const[editing,setEditing] = useState(null)
+  const [isEdit, setIsEdit] = useState(false)
+  const[edit,setEdit] = useState(null)
   const [dataSource, setDataSource] = useState([
     {
       id:1,
@@ -45,6 +45,15 @@ function App() {
       lastName:'selvi',
       email:'pandiselvi@gmail.com',
       gender:'female',
+      dateOfBirth:'2023-03-14',
+      dateOfJoining:'2023-03-14',
+    },
+     {
+      id:5,
+      firstName:'jambu',
+      lastName:'krshi',
+      email:'jambukrshi@gmail.com',
+      gender:'male',
       dateOfBirth:'2023-03-14',
       dateOfJoining:'2023-03-14',
     },
@@ -142,25 +151,30 @@ function App() {
        
   };
   const onEdit = (record) =>{
-    setIsEditing(true);
-    setEditing({...record})
+    setIsEdit(true);
+    setEdit({...record})
     
    
   };
-  const resetEditing=()=>{
-    setIsEditing(false);
-    setEditing(null);
+  const resetEdit=()=>{
+    setIsEdit(false);
+    setEdit(null);
     
   };
   
   const onAddEmployee = (record) => {
-    setIsAdding(true);
-    setIsAdding({...record})
-   
-  };
-  const resetAdding=()=>{
-    setIsAdding(false);
-    setIsAdding(null);
+   const newEmployee ={
+      id:'',
+      firstName:'',
+      lastName:'',
+      email:'',
+      gender:'',
+      dateOfBirth:'',
+      dateOfJoining:'', 
+    }
+    setDataSource(pre=>{
+      return[...pre, newEmployee ];
+    }); 
     
   };
   
@@ -172,151 +186,68 @@ function App() {
       <header className="App-header">
       <center><h1>Employee Details</h1> </center><br/><br/>
       <center><Button  onClick={onAddEmployee} style={{backgroundColor:"skyblue", color:"Black"}}>Add new employee
-      <Modal
-          title="Add new Employee"
-          visible = {isAdding} 
-          okText="Add"
-          onCancel={()=>{
-           resetAdding()
-          }}
-          
-          onOk={() => {
-           setDataSource(pre=>{
-              return pre.map(employee=>{
-               if(employee.id !== adding.id) {
-                 return  employee + 1;
-              }
-             else{
-                 return employee;
-               }
-              });
-           });
-            resetAdding()
-          }  }                 
-         >
-          <Space direction="vertical" style={{ width: '100%' }}>
-          <label >First Name</label>
-
-<Input label="firstname:"
- value={adding?.firstName}
-     onChange={(e) => {
-       setAdding((pre)=>{
-           return{...pre, firstName: e.target.value};
-      });
-}} placeholder="firstName"
-/>
-<label >Last Name</label>
-<Input label="lastname:"
-value={adding?.lastName}
-onChange={(e) => {
-setAdding((pre)=>{
-return{...pre, lastName: e.target.value};
-});
-}} placeholder="lastName"
-/>
-<label >Email</label>
-<Input label="email:"
-value={adding?.email}
-onChange={(e) => {
-setAdding((pre)=>{
-return{...pre, email: e.target.value};
-});
-}} placeholder="email"
-/>
-
-         
-<label >Gender</label>
-  <select  placeholder="gender"  style={{ color:"gray", width: '100%',height:"33px" }} value={adding?.gender}
-   onChange={(e) => {
-  setAdding((pre)=>{
-    return{...pre, gender: e.target.value};
-  });
-}} >
-
-       <option value="Male">male</option>
-
-       <option value="female">female</option>
-
-       <option value="other">other</option>
-
-     
-
-  </select>
-  <label >Date Of Birth</label>
-  <Input type="date" label="dateOfBirth:"
-  value={adding?.dateOfBirth}
-   onChange={(e) => {
-  setAdding((pre)=>{
-    return{...pre, dateOfBirth: e.target.value};
-  });
-}} placeholder="dateOfBirth"
-  />
-  <label >Date Of Joining</label>
-  <Input type="date" label="dateOfJoining:"
-  value={adding?.dateOfJoining}
-   onChange={(e) => {
-  setAdding((pre)=>{
-    return{...pre, dateOfJoining: e.target.value};
-  });
-}} placeholder="dateOfJoining"
-  />
-            
-           
-            
-           
-            
-          </Space>  
-             
-        </Modal>
-        
-      </Button><br/><br/></center>
-      
       <Table columns={columns} dataSource={dataSource} />
     
         <Modal
            title="Edit Employee"
-           visible={isEditing} 
+           visible={isEdit} 
            okText="Save"
            onCancel={()=>{
-            resetEditing()
+            resetEdit()
            }}
            
           onOk={() => {
             setDataSource(pre=>{
                return pre.map(employee=>{
-                if(employee.id === editing.id){
-                  return editing
+                if(employee.id === edit.id){
+                  return edit
                 }
                 else{
                   return employee;
                 }
                })
             })
-             resetEditing()
+             resetEdit()
           }  }  
-         required rules = {[{required:true, message:"Please Enter employee firs name"}]}
+        
+        >
+          <Form
+        autoComplete="off" 
+        labelCol={{ span:10}} 
+        wrapperCol={{ span:10}}
+        onFinish={( values) =>{
+          console.log({ values});
+        }}
+        onFinishFailed={(error) => {
+          console.log({ error });
+        }} 
         >
           <Space direction="vertical" style={{ width: '100%' }}>
-          <label >First Name</label>
-
-             <Input label="firstname:"
-              value={editing?.firstName}
-                  onChange={(e) => {
-                    setEditing((pre)=>{
+            <Form.Item name="firstName"label="First Name" 
+            rules={[
+              {
+                required: true,
+                message: "please Enter your First name",
+                },
+                {whitespace:true},
+                {min: 3},
+                ]}hasFeedback>  
+         
+             <Input value={editing?.firstName} onChange={(e) => { setEditing((pre)=>{
                         return{...pre, firstName: e.target.value};
-                   });
-}} placeholder="firstName"  required rules = {[{required:false, message:"Please Enter employee firstName"}]}
-  />
-  <label >Last Name</label>
-  <Input label="lastname:"
-  value={editing?.lastName}
-   onChange={(e) => {
-  setEditing((pre)=>{
-    return{...pre, lastName: e.target.value};
-  });
-}} placeholder="lastName"
-  />
-  <label >Email</label>
+                   });}} placeholder="firstName"  /></Form.Item>
+
+             <Form.Item name="lastName"label= "Last Name"  rules={[
+              {
+                required: true,
+                message: "please Enter your First name",
+                },
+                {whitespace:true},
+                {min: 3},
+                ]}hasFeedback> 
+                 <Input label="lastname:" value={editing?.lastName} onChange={(e) => {setEditing((pre)=>{
+                          return{...pre, lastName: e.target.value}; });}} placeholder="lastName"/></Form.Item>
+  
   <Input label="email:"
   value={editing?.email}
    onChange={(e) => {
