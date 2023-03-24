@@ -9,9 +9,12 @@ import * as React from 'react';
 
 
 function App() {
+
   const [isEdit, setIsEdit] = useState(false)
   const[edit,setEdit] = useState(null)
- 
+  const [isAdd, setIsAdd] = useState(false)
+  const [add, setAdd] = useState(null)
+ const[count,setcount] =useState(2)
   const [dataSource, setDataSource] = useState([
     {
       id:1,
@@ -77,6 +80,7 @@ function App() {
       dateOfBirth:'2023-03-14',
       dateOfJoining:'2023-03-14',
     },
+    
 
     
   ]);
@@ -138,6 +142,17 @@ function App() {
       },
     },
   ]
+  const save = async (record) => {
+    try {
+      const values = await Form.validateFields();
+
+      edit();
+      handleSave({ ...record, ...values });
+    } catch (errInfo) {
+      console.log('Save failed:', errInfo);
+    }
+  };
+
     const onDelete=(record)=>{
     Modal.confirm({
       title:'Are you sure,you want to delete this employee record?',
@@ -163,27 +178,47 @@ function App() {
     
   };
   
-  const onAdd = () => {
-    const newEmployee ={
-      id:'',
+  const onAdd = (record) => {
+    setIsAdd(true);
+    setAdd({...record})
+    const newEmployee={
+      id:count,
       firstName:'',
       lastName:'',
       email:'',
       gender:'',
       dateOfBirth:'',
       dateOfJoining:'', 
-    }
-    setDataSource(pre=>{
-      return[...pre, newEmployee ];
-    }); 
+    };
+      setDataSource([...dataSource,newEmployee]);
+      setcount(count+1);
+   
+     };
+     const handleSave = (row) => {
+      const newEmployee = [...dataSource];
+      const index = newEmployee.findIndex((item) => row.key === item.key);
+      const item = newEmployee[index];
+      newEmployee.splice(index, 1, {
+        ...item,
+        ...row,
+      });
+      setDataSource(newEmployee);
+    };
+
+  const resetAdd=()=>{
+    setIsAdd(false);
+    setAdd(null);
   };
+    
+  
+  
    
    return (
 
     <div className="App">
       <header className="App-header">
       <center><h1>Employee Details</h1> </center><br/><br/>
-      <div><center><Button  onClick={onAdd} style={{backgroundColor:"skyblue", color:"Black"}}>Add new employee</Button><br/><br/></center></div>
+      <div><center><Button   onClick={onAdd} style={{backgroundColor:"skyblue", color:"Black"}}>Add new employee</Button><br/><br/></center></div>
        <div><Table columns={columns} dataSource={dataSource} /></div>
        <div><Modal
        title="Edit Employee"
@@ -275,6 +310,97 @@ function App() {
           </Form> 
         </Modal>
         </div>
+        <div><Modal
+       title="Add New Employee"
+       visible={isAdd}
+       okText="save"
+       onCancel={()=>{
+        resetAdd()
+         }}
+           
+      onOk={() => {
+        setDataSource(pre=>{
+          return pre.map(employee=>{
+              if(employee.id=== add.id){
+                
+                 return add;
+                }
+            
+            
+            else{
+                 return employee;
+                }
+               });
+            });
+           resetAdd()
+          }}> 
+          <Form
+        autoComplete="off" 
+        labelCol={{ span:10}} 
+        wrapperCol={{ span:10}}
+        onFinish={( values) =>{
+          console.log({ values});
+        }}
+        onFinishFailed={(error) => {
+          console.log({ error });
+        }} 
+        >
+          <Space direction="vertical" style={{ width: '100%' }}>
+           
+            <Form.Item name="firstName"label="First Name" 
+            rules={[
+              {
+                required: true,
+                message: "please Enter your First name",
+                },
+                {whitespace:true},
+                {min: 3},
+                ]}hasFeedback>  
+              <Input value={add?.firstName} onChange={(e) => {  setAdd((pre)=>{  return{...pre, firstName: e.target.value}; }); }} placeholder="firstName"></Input></Form.Item>
+            <Form.Item name="lastName"label= "Last Name"  rules={[
+              {
+                required: true,
+                message: "please Enter your First name",
+                },
+                {whitespace:true},
+                {min: 3},
+                ]}hasFeedback> 
+             <Input value={add?.lasttName} onChange={(e) => {  setAdd((pre)=>{  return{...pre, lastName: e.target.value}; }); }} placeholder="lastName"></Input></Form.Item>
+             <Form.Item name="email"label= "Email"  rules={[
+              {
+                required: true,
+                message: "please Enter your Email",
+                },
+                {type: "email"},
+                ]}>
+              <Input value={add?.email} onChange={(e) => {  setAdd((pre)=>{  return{...pre, email: e.target.value}; }); }} placeholder="email"></Input></Form.Item>
+              <Form.Item name="gender"label= "Gender" requiredMark="optional"> 
+              <select  placeholder="gender"  style={{ color:"gray", width: '100%',height:"33px" }} value={add?.gender} onChange={(e) => {setAdd((pre)=>{return{...pre, gender: e.target.value};});}} >
+                      <option value="Male">male</option>
+                      <option value="female">female</option>
+                     <option value="other">other</option>
+              </select></Form.Item>
+            <Form.Item name="dateOfBirth"label= "date Of Birth"  rules={[
+              {
+                required: true,
+                message: "please provide your date of birth",
+                },
+               
+                ]}hasFeedback>
+              <Input type="date" value={add?.dateOfBirth} onChange={(e) => {  setAdd((pre)=>{  return{...pre, dateOfBirth: e.target.value}; }); }} placeholder="dateOfBirth"></Input></Form.Item>
+            <Form.Item name="date of joing"label= "date Of Joining"  rules={[
+              {
+                required: true,
+                message: "please provide your joining date",
+                },
+                
+                ]}hasFeedback>
+              <Input type="date" value={add?.dateOfJoining} onChange={(e) => {  setAdd((pre)=>{  return{...pre, dateOfJoining: e.target.value}; }); }} placeholder="dateOfJoining"></Input></Form.Item>
+              
+          </Space> 
+          </Form> 
+       </Modal>
+       </div>
       </header>
     </div>
     
