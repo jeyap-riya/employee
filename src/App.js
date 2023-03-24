@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Table,Modal,Input,Space,Button} from "antd";
+import { Table,Modal,Input,Space,Button,Form} from "antd";
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import * as React from 'react';
 
