@@ -190,13 +190,15 @@ function App() {
       dateOfBirth:'',
       dateOfJoining:'', 
     };
+    
       setDataSource([...dataSource,newEmployee]);
       setcount(count+1);
    
      };
+     
      const handleSave = (row) => {
       const newEmployee = [...dataSource];
-      const index = newEmployee.findIndex((item) => row.key === item.key);
+      const index = newEmployee.findIndex((item) => row.id === item.id);
       const item = newEmployee[index];
       newEmployee.splice(index, 1, {
         ...item,
@@ -321,9 +323,8 @@ function App() {
       onOk={() => {
         setDataSource(pre=>{
           return pre.map(employee=>{
-              if(employee.id=== add.id){
-                
-                 return add;
+              if(employee.id === add.id){
+                     return add;
                 }
             
             
