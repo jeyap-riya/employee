@@ -86,7 +86,7 @@ function App() {
   ]);
   const columns=[
     {
-      key:'1',
+      key:"1",
       title:'ID',
       dataIndex:'id',
     },
@@ -142,16 +142,8 @@ function App() {
       },
     },
   ]
-  const save = async (record) => {
-    try {
-      const values = await Form.validateFields();
-
-      edit();
-      handleSave({ ...record, ...values });
-    } catch (errInfo) {
-      console.log('Save failed:', errInfo);
-    }
-  };
+  
+  
 
     const onDelete=(record)=>{
     Modal.confirm({
@@ -181,8 +173,9 @@ function App() {
   const onAdd = (record) => {
     setIsAdd(true);
     setAdd({...record})
-    const newEmployee={
-      id:count,
+    const newEmployee=
+    {
+      id:count+1,
       firstName:'',
       lastName:'',
       email:'',
@@ -220,13 +213,14 @@ function App() {
    return (
 
     <div className="App">
-      <header className="App">
+      <header className="App-header">
       <center><h1>Employee Details</h1> </center><br/><br/>
-      <div><center><Button   onClick={onAdd} style={{backgroundColor:"skyblue", color:"Black"}}>Add new employee</Button><br/><br/></center></div>
-       <div><Table columns={columns} dataSource={dataSource}  rowClassName={() => 'editable-row'}/></div>
-       <div><Modal
+      <center><Button   onClick={onAdd} style={{backgroundColor:"skyblue", color:"Black"}}>Add new employee</Button><br/><br/></center>
+       <Table columns={columns} dataSource={dataSource}  rowClassName={() => 'editable-row'}/>
+       <Modal 
        title="Edit Employee"
-      
+
+       open={isEdit}
        okText="Save"
        onCancel={()=>{
           resetEdit()
@@ -234,6 +228,7 @@ function App() {
            
       onOk={() => {
         setDataSource(pre=>{
+         
           return pre.map(employee=>{
               if(employee.id === edit.id){
                  return edit
@@ -313,10 +308,10 @@ function App() {
           </Space> 
           </Form> 
         </Modal>
-        </div>
-        <div><Modal
-       title="Add New Employee"
        
+        <Modal
+       title="Add New Employee"
+       open={isAdd}
        okText="save"
        onCancel={()=>{
         resetAdd()
@@ -359,7 +354,7 @@ function App() {
                 {whitespace:true},
                 {min: 3},
                 ]}hasFeedback>  
-              <Input value={add?.firstName} onChange={(e) => {  setAdd((pre)=>{  return{...pre, firstName: e.target.value}; }); }} placeholder="firstName"></Input></Form.Item>
+              <Input value={add?.firstName}  placeholder="firstName"></Input></Form.Item>
             <Form.Item name="lastName"label= "Last Name"  rules={[
               {
                 required: true,
@@ -368,7 +363,7 @@ function App() {
                 {whitespace:true},
                 {min: 3},
                 ]}hasFeedback> 
-             <Input value={add?.lasttName} onChange={(e) => {  setAdd((pre)=>{  return{...pre, lastName: e.target.value}; }); }} placeholder="lastName"></Input></Form.Item>
+             <Input value={add?.lastName} placeholder="lastName"></Input></Form.Item>
              <Form.Item name="email"label= "Email"  rules={[
               {
                 required: true,
@@ -376,7 +371,7 @@ function App() {
                 },
                 {type: "email"},
                 ]}>
-              <Input value={add?.email} onChange={(e) => {  setAdd((pre)=>{  return{...pre, email: e.target.value}; }); }} placeholder="email"></Input></Form.Item>
+              <Input value={add?.email}  placeholder="email"></Input></Form.Item>
               <Form.Item name="gender"label= "Gender" requiredMark="optional"> 
               <select  placeholder="gender"  style={{ color:"gray", width: '100%',height:"33px" }} value={add?.gender} onChange={(e) => {setAdd((pre)=>{return{...pre, gender: e.target.value};});}} >
                       <option value="Male">male</option>
@@ -390,7 +385,7 @@ function App() {
                 },
                
                 ]}hasFeedback>
-              <Input type="date" value={add?.dateOfBirth} onChange={(e) => {  setAdd((pre)=>{  return{...pre, dateOfBirth: e.target.value}; }); }} placeholder="dateOfBirth"></Input></Form.Item>
+              <Input type="date" value={add?.dateOfBirth}  placeholder="dateOfBirth"></Input></Form.Item>
             <Form.Item name="date of joing"label= "date Of Joining"  rules={[
               {
                 required: true,
@@ -398,12 +393,12 @@ function App() {
                 },
                 
                 ]}hasFeedback>
-              <Input type="date" value={add?.dateOfJoining} onChange={(e) => {  setAdd((pre)=>{  return{...pre, dateOfJoining: e.target.value}; }); }} placeholder="dateOfJoining"></Input></Form.Item>
+              <Input type="date" value={add?.dateOfJoining}  placeholder="dateOfJoining"></Input></Form.Item>
               
           </Space> 
           </Form> 
        </Modal>
-       </div>
+       
       </header>
     </div>
     
