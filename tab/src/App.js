@@ -322,15 +322,15 @@ function App() {
            
       onOk={() => {
         setDataSource(pre=>{
-          return pre.map(employee=>{
-              if(employee.id === add.id){
-                     return add;
-                }
-            
-            
-            else{
-                 return employee;
-                }
+          return pre.map(newEmployee=>{
+            if(newEmployee.id === add.id){
+              return add;
+         }
+     
+     
+     else{
+          return newEmployee;
+         }
                });
             });
            resetAdd()
