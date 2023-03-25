@@ -193,9 +193,9 @@ function App() {
      
      const handleSave = (row) => {
       const newEmployee = [...dataSource];
-      const index = newEmployee.findIndex((item) => row.id === item.id);
-      const item = newEmployee[index];
-      newEmployee.splice(index, 1, {
+      const id = newEmployee.findId((item) => row.id === item.id);
+      const item = newEmployee[id];
+      newEmployee.splice(id, 1, {
         ...item,
         ...row,
       });
@@ -215,11 +215,10 @@ function App() {
     <div className="App">
       <header className="App-header">
       <center><h1>Employee Details</h1> </center><br/><br/>
-      <center><Button   onClick={onAdd} style={{backgroundColor:"skyblue", color:"Black"}}>Add new employee</Button><br/><br/></center>
-       <Table columns={columns} dataSource={dataSource}  rowClassName={() => 'editable-row'}/>
+      <center><Button   onClick={onAdd} onChange={handleSave} style={{backgroundColor:"skyblue", color:"Black"}}>Add new employee</Button><br/><br/></center>
+       <Table columns={columns} dataSource={dataSource} />
        <Modal 
        title="Edit Employee"
-
        open={isEdit}
        okText="Save"
        onCancel={()=>{
@@ -273,7 +272,7 @@ function App() {
                 {whitespace:true},
                 {min: 3},
                 ]}hasFeedback> 
-             <Input value={edit?.lasttName} onChange={(e) => {  setEdit((pre)=>{  return{...pre, lastName: e.target.value}; }); }} placeholder="lastName"></Input></Form.Item>
+             <Input value={edit?.lastName} onChange={(e) => {  setEdit((pre)=>{  return{...pre, lastName: e.target.value}; }); }} placeholder="lastName"></Input></Form.Item>
              <Form.Item name="email"label= "Email"  rules={[
               {
                 required: true,
