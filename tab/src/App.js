@@ -175,7 +175,7 @@ function App() {
     setAdd({...record})
     const newEmployee=
     {
-      id:count+1,
+      id:count,
       firstName:'',
       lastName:'',
       email:'',
