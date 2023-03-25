@@ -14,7 +14,7 @@ function App() {
   const[edit,setEdit] = useState(null)
   const [isAdd, setIsAdd] = useState(false)
   const [add, setAdd] = useState(null)
- const[count,setcount] =useState(2)
+ const[count,setcount] =useState(0)
   const [dataSource, setDataSource] = useState([
     {
       id:1,
@@ -192,9 +192,11 @@ function App() {
     };
     
       setDataSource([...dataSource,newEmployee]);
-      setcount(count+1);
+      setcount((prevCount) => prevCount+1);
    
      };
+     
+     
      
      const handleSave = (row) => {
       const newEmployee = [...dataSource];
@@ -218,13 +220,13 @@ function App() {
    return (
 
     <div className="App">
-      <header className="App-header">
+      <header className="App">
       <center><h1>Employee Details</h1> </center><br/><br/>
       <div><center><Button   onClick={onAdd} style={{backgroundColor:"skyblue", color:"Black"}}>Add new employee</Button><br/><br/></center></div>
        <div><Table columns={columns} dataSource={dataSource}  rowClassName={() => 'editable-row'}/></div>
        <div><Modal
        title="Edit Employee"
-       visible={isEdit}
+      
        okText="Save"
        onCancel={()=>{
           resetEdit()
@@ -314,7 +316,7 @@ function App() {
         </div>
         <div><Modal
        title="Add New Employee"
-       visible={isAdd}
+       
        okText="save"
        onCancel={()=>{
         resetAdd()
